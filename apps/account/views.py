@@ -39,14 +39,16 @@ class LoginView(generics.GenericAPIView):
 
 class AccountView(generics.RetrieveAPIView):
     # http://127.0.0.1:8000/accounts/get-account/
-    permission_classes = (IsOwnUserOrReadOnly, IsAuthenticated, )
+    queryset = Account.objects.all()
+    permission_classes = (IsAuthenticated, )
     serializer_class = AccountUpdateSerializer
 
-    def get(self, request, *args, **kwargs):
-        user = request.user
-        query = Account.objects.get(id=user.id)
-        serializer = self.get_serializer(query)
-        return Response({'success': True, 'data': serializer.data}, status=status.HTTP_200_OK)
+    def get_object(self):
+        account = self.request.user
+        print(account)
+        if account:
+            return account
+        return []
 
 
 class AccountRetrieveUpdateView(generics.RetrieveUpdateAPIView):

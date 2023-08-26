@@ -56,6 +56,8 @@ class Account(AbstractBaseUser, PermissionsMixin):
     full_name = models.CharField(max_length=50, verbose_name=_('Full name'), null=True)
     image = models.ImageField(upload_to='accounts/', verbose_name=_('Account image'), null=True, blank=True)
     role = models.IntegerField(choices=ROLE, default=1)
+    product_name = models.CharField(max_length=221, null=True, blank=True)
+    category = models.ForeignKey('product.Category', on_delete=models.CASCADE, null=True, blank=True)
     city = models.ForeignKey(City, on_delete=models.CASCADE, null=True, blank=True, related_name='city')
     is_superuser = models.BooleanField(default=False, verbose_name=_('Super user'))
     is_staff = models.BooleanField(default=False, verbose_name=_('Staff user'))
