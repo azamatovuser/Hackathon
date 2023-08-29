@@ -53,6 +53,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     )
     username = models.CharField(max_length=50, unique=True, verbose_name=_('Username'), db_index=True)
     email = models.EmailField(max_length=50, unique=True, verbose_name=_('Email'), db_index=True, null=True, blank=True)
+    phone = models.CharField(max_length=16, verbose_name=_('Phone Number'), null=True, blank=True)
     full_name = models.CharField(max_length=50, verbose_name=_('Full name'), null=True)
     image = models.ImageField(upload_to='accounts/', verbose_name=_('Account image'), null=True, blank=True)
     role = models.IntegerField(choices=ROLE, default=1)

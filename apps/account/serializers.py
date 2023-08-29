@@ -5,16 +5,30 @@ from django.contrib.auth import authenticate
 from rest_framework.exceptions import AuthenticationFailed
 import collections
 
-from .models import Account
+from .models import Account, City, Country
+
+
+class CountrySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Country
+        fields = '__all__'
+
+
+class CitySerializer(serializers.ModelSerializer):
+    country = CountrySerializer()
+    class Meta:
+        model = City
+        fields = '__all__'
 
 
 class RegisterSerializer(serializers.ModelSerializer):
+    city =  CitySerializer()
     password = serializers.CharField(min_length=6, max_length=68, write_only=True)
     password2 = serializers.CharField(min_length=6, max_length=68, write_only=True)
 
     class Meta:
         model = Account
-        fields = ('full_name', 'phone', 'product_name', 'category', 'email', 'username', 'password', 'password2')
+        fields = ('full_name', 'product_name', 'category', 'email', 'phone', 'city', 'role', 'username', 'password', 'password2')
 
     def validate(self, attrs):
         password = attrs.get('password')

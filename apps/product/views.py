@@ -32,6 +32,7 @@ class ProductListAPIView(generics.ListAPIView):
         price = self.kwargs.get('price')
         expensive = self.kwargs.get('expensive')
         cheap = self.kwargs.get('cheap')
+        search = self.kwargs.get('search')
         if price:
             q_filters &= Q(price=price)
         else:
@@ -43,6 +44,8 @@ class ProductListAPIView(generics.ListAPIView):
         if newest:
             qs = qs.order_by('-created_date')
         qs = qs.filter(q_filters)
+        if search:
+            qs = qs.filter(title__icontains=search)
         return qs
 
 
